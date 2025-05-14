@@ -15,4 +15,4 @@ This is an extension of my winter project where I created a web app that allows 
 ## Schedule
 * Tuesday, May 20 — Backend set up and all major functions completable in Postman/Compass
 * Tuesday, May 27 — Front end react app hooked up to backend
-* Tuesday, June 3 — Project due
+* Tuesday, June 3 — Testing of 80% completed and possible deployment — Project due
