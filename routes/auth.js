@@ -1,13 +1,14 @@
 // for creating, reading, updating, and deleting users
 const {Router} = require('express');
 const router = Router();
+require('dotenv').config(); 
 const jwt = require('jsonwebtoken');
 const userDAO = require('../daos/auth');
 const bcrypt = require('bcrypt');
 
 // make sure to come back to this and set up a real secret
 // this is just for testing; don't ever do this for real!
-const secret = process.env.JWT_SECRET || 'secret';
+const secret = process.env.JWT_SECRET;
 
 // reusable component for authentication
 async function authMiddleware(req, res, next) {
