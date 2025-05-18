@@ -1,0 +1,1 @@
+// for defining the functions that will access the database of artworks
