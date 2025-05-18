@@ -13,6 +13,7 @@ async function createUser ({email, passwordHash, roles = ['user']}) {
     } else {
         // use the create method (from Mongoose) to create a user
         const user = await User.create({email, password: passwordHash, roles});
+        return user;
     }
 }
 

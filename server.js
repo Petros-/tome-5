@@ -1,3 +1,7 @@
+// this relates to getting the JWT_SECRET key
+require('dotenv').config(); 
+
+
 const express = require("express");
 
 const routes = require("./routes");

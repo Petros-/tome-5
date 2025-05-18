@@ -1,7 +1,6 @@
 // for creating, reading, updating, and deleting users
 const {Router} = require('express');
 const router = Router();
-require('dotenv').config(); 
 const jwt = require('jsonwebtoken');
 const userDAO = require('../daos/auth');
 const bcrypt = require('bcrypt');
