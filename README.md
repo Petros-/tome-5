@@ -5,12 +5,14 @@ A web app for storing artworks
 This is an extension of my winter project where I created a web app that allows authenticated users to upload images and add metadata to them and view those artworks by metadata. Artists need to keep records of artworks they've created. There are other platforms out on the market that do this, but not in a cost-effective and modern way.
 
 ## Project Plan
-1. Create the API and database connection for Creating, Reading, updating and deleting users
-2. Create the API and database connection for Creating, Reading, updating and deleting artworks
-3. Create the API and database connection for Creating, Reading, updating and deleting tags
-4. Utilitze authentication so a user can only see their own artworks and tags
-5. Hook all of that up to the front-end I created in the last class
-6. Add the ability to download .pdfs of tagged artworks (nice to have)
+[x] Create the API and database connection for creating users and logging in
+[] Enable a user to change their password
+[] Create the API and database connection for Creating, Reading, updating and deleting artworks
+[] Create the API and database connection for Creating, Reading, updating and deleting tags
+[] Utilize authentication so a user can only see their own artworks and tags
+[] Hook all of that up to the front-end I created in the last class
+[] Write tests that get me to 80% coverage
+[] Add the ability to download .pdfs of tagged artworks (nice to have)
 
 ## Schedule
 * Tuesday, May 20 — Backend set up and all major functions completable in Postman/Compass
