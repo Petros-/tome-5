@@ -19,7 +19,7 @@ async function createUser ({email, passwordHash, roles = ['user']}) {
 
 // login
 async function login (email, plainPassword) {
-    const user = await user.findOne({email})
+    const user = await User.findOne({email})
     if (!user) {
         console.error(`Didn't work. Have you signed up yet?`);
         return undefined;
@@ -27,11 +27,7 @@ async function login (email, plainPassword) {
 
     // compare passwords
     const hasValidPassword = await bcrypt.compare(plainPassword, user.password);
-    if (hasValidPassword) {
-        return user;
-    } else {
-        return undefined;
-    }
+    return hasValidPassword ? user : undefined;
 }
 
 // let a user change or update their password

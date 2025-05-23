@@ -118,6 +118,18 @@ router.post("/login", async (req, res, next) => {
     }
 });
 
+// logout
+function logout(req, res) {
+    req.session.destroy((err) => {
+        if (err) {
+            console.error('Logout failed:', err);
+            return res.status(500).send('Logout failed');
+        }
+        res.clearCookie('connect.sid'); // name of the session cookie
+        res.send('Logged out successfully');
+    });
+}
+
 // update password
 router.put("/password", authMiddleware, async (req, res, next) => {
     try {
