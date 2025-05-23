@@ -1,8 +1,9 @@
+require('dotenv').config();
 const mongoose = require("mongoose");
 const models = [
     // add other models if you add them in ../models
-  require("./models/artwork"),
-  require("./models/user"),
+  // require("./models/artwork"),
+  require("../models/user")
 ];
 
 module.exports = {};
