@@ -1,3 +1,9 @@
+const { Router } = require("express");
+const router = Router();
+
+const tagDAO = require('../daos/tags');
+const { authMiddleware } = require('./auth');
+
 // create a new tag
 router.post("/tags", (req, res, next) => {
 

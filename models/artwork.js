@@ -3,8 +3,7 @@ const mongoose = require("mongoose");
 
 const artworkSchema = new mongoose.Schema({
     title: {type:String},
-    medium: {type:String},
-    createdAt: {type:Date}
+    medium: {type:String}
     // image: {type: String},
     // date: {type:Date},
     // tags: {type: [String]},
@@ -15,6 +14,8 @@ const artworkSchema = new mongoose.Schema({
     // region: {type: [String]},
     // currentLocation: {type: String},
     // availability: {type: String, default: 'Available'}
+}, {
+    timestamps: true
 });
 
 module.exports = mongoose.model("Artwork", artworkSchema)
