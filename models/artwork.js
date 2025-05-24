@@ -3,7 +3,8 @@ const mongoose = require("mongoose");
 
 const artworkSchema = new mongoose.Schema({
     title: {type:String},
-    medium: {type:String}
+    medium: {type:String},
+    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     // image: {type: String},
     // date: {type:Date},
     // tags: {type: [String]},

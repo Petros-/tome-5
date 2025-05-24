@@ -5,6 +5,8 @@ const fs = require('fs');
 const path = require('path');
 
 const router = express.Router();
+const { authMiddleware } = require('./auth');
+const artworkDAO = require('../daos/artworks');
 
 const pdfDir = path.join(__dirname, '..', 'samplePdfs');
 
@@ -14,27 +16,59 @@ if (!fs.existsSync(pdfDir)) {
     fs.mkdirSync(pdfDir);
 }
 
-router.get('/generate-pdf', (req, res) => {
+router.get('/generate-pdf', authMiddleware, async (req, res) => {
+    // tie the .pdf creation into my database
+    try {
+        // get the current user's ID from the decoded JWT
+        const userId = req.user._id;
 
-    // define how you want the pdf to be named
-    const filePath = path.join(pdfDir, 'blue_circle.pdf');
-    const doc = new PDFDocument();
+        // check to make sure there's a current user
+        if (!userId) {
+            return res.status(404).json({ error: 'No token provided. Are you signed in?' })
+        }
 
-    // create a place or "stream" into which the file can be created incrementally
-    const writeStream = fs.createWriteStream(filePath);
-    doc.pipe(writeStream);
+        // get the artworks that belong to the current user
+        const userArtworks = await artworkDAO.getArtworksByUserId(userId);
 
-    // Draw blue circle
-    doc.fillColor('blue').circle(300, 300, 100).fill();
+        if (!userArtworks || userArtworks.length === 0) {
+            return res.status(404).json({ error: 'No artworks found for this user:', userId })
+        }
 
-    // Add text
-    doc.fillColor('black').fontSize(20).text('this is a blue circle', 200, 450);
+        // handle the file naming
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+        const filename = `artworks_${timestamp}.pdf`;
+        const filePath = path.join(pdfDir, filename);
 
-    doc.end();
+        // create the pdf
+        const doc = new PDFDocument();
+        // create a funnel or place where the pdf can be created incrementally
+        const writeStream = fs.createWriteStream(filePath);
+        doc.pipe(writeStream);
 
-    writeStream.on('finish', () => {
-        res.download(filePath, 'blue_circle.pdf');
-    });
+        // put stuff in the pdf
+        doc.fontSize(20).text(`Here are ${req.user.email}'s artworks`);
+        doc.moveDown();
+
+        // for each artwork include the title and the medium
+        userArtworks.forEach((art, index) => {
+            doc
+                .fontSize(14)
+                .text(`${index + 1}. Title: ${art.title || 'No title provided'}`);
+            doc.text(`Medium: ${art.medium || '—'}`);
+            doc.moveDown();
+        })
+
+        doc.end();
+
+        // send the file to the folder after it is created
+        writeStream.on('finish', () => {
+            res.download(filePath, filename);
+        });
+
+    } catch (error) {
+        console.error(`There was a problem generating the pdf:`, error);
+        res.status(500).json({ error: 'Failed to generate PDF' });
+    }
 });
 
 module.exports = router;
