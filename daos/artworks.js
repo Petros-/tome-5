@@ -18,10 +18,22 @@ module.exports.createArtwork = async (userId, artObject) => {
 module.exports.getArtworks = async () => {
     const artworks = await Artwork.find();
     return artworks;
-}
+};
 
 // get a specific artwork
 module.exports.getArtworkById = async (id) => {
     const artwork = await Artwork.findById(id);
     return artwork;
+};
+
+// edit an artwork
+module.exports.updateArtwork = async (id, artworkToUpdate) => {
+    if (!id || !artworkToUpdate) {
+        throw new Error("Missing the item id or the data to update it with")
+    }
+    const updatedArtwork = await Item.findByIdAndUpdate(id, artworkToUpdate, {
+        new: true,
+        runValidators: true
+    });
+    return updatedArtwork;
 }

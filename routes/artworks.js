@@ -65,7 +65,7 @@ router.get("/:id", authMiddleware, async (req, res, next) => {
 
 // edit an artwork
 router.put("/:id", authMiddleware, async (req, res, next) => {
-
+    
 });
 
 
