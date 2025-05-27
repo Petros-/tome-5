@@ -49,13 +49,52 @@ router.get('/generate-pdf', authMiddleware, async (req, res) => {
         doc.fontSize(20).text(`Here are ${req.user.email}'s artworks`);
         doc.moveDown();
 
-        // for each artwork include the title and the medium
+        // include a sample image for the time being
+        const imagePath = path.join(__dirname, '..', 'sampleImages', 'Dec022023Photoshoot-017.jpg');
+
+        // for each artwork include the title and the medium, and perhaps more later
         userArtworks.forEach((art, index) => {
+            // set the max size for the image
+            const imageSize = 100; 
+            // get the current horizontal position of the cursor
+            const imageX = doc.x;
+            // get the current vertical position of the cursor
+            const imageY = doc.y;
+
+            // draw the image
+            doc.image(imagePath, {
+                width: imageSize
+            });
+            
+            // get and set the x position for the text
+            // + 10 (for example) is the padding
+            const textX = imageX + imageSize + 12;
+            const textY = imageY;
+
+            // Save current y in order to set the next row's starting point
+            const startY = doc.y;
+
+            // put text to the right of the image
             doc
                 .fontSize(14)
-                .text(`${index + 1}. Title: ${art.title || 'No title provided'}`);
-            doc.text(`Medium: ${art.medium || '—'}`);
+                .text(`${index + 1}. Title: ${art.title || 'No title provided'}`, textX, textY,{
+                    width: 400,
+                    continued: false
+                });
+            doc.text(`Medium: ${art.medium || '—'}`, textX);
+
             doc.moveDown();
+
+            // do some calculations for placing the next row of content
+            const imageHeight = imageSize;
+            const textHeight = doc.y - startY;
+            // take whichever is higher, the image height or the height of the text
+            const rowHeight = Math.max(imageHeight, textHeight);
+
+            doc.y = startY + rowHeight + 12;
+
+            // reset the x position to the left margin
+            doc.x = doc.page.margins.left;
         })
 
         doc.end();
